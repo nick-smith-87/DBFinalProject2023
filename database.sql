@@ -21,7 +21,7 @@ CREATE TABLE Team (
 
 CREATE TABLE plays_for (
     PlayerID VARCHAR(4),
-    TeamID VARCHAR(3),
+    TeamID VARCHAR(3)
 );
 
 INSERT INTO Player (PlayerID, Name, Position, Salary, FantasyPoints) VALUES
