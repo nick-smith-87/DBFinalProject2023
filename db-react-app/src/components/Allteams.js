@@ -40,7 +40,7 @@ function AllTeams(props) {
               <TableCell>{team.win}</TableCell>
               <TableCell>{team.loss}</TableCell>
               <TableCell>{team.madeplayoffs}</TableCell>
-              <TableCell>{team.salary_of_players_used}</TableCell>
+              <TableCell>{'$' + team.salary_of_players_used.toLocaleString()}</TableCell>
               <TableCell>{team.conference}</TableCell>
               <TableCell>{team.division}</TableCell>
             </TableRow>

@@ -22,7 +22,6 @@ function AllPlayers(props) {
             <TableCell>Position</TableCell>
             <TableCell>Salary</TableCell>
             <TableCell>Fantasy Points</TableCell>
-            <TableCell>Team</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -32,8 +31,7 @@ function AllPlayers(props) {
               <TableCell>{player.name}</TableCell>
               <TableCell>{player.position}</TableCell>
               <TableCell>{'$' + player.salary.toLocaleString()}</TableCell>
-              <TableCell>{player.fantasy_points}</TableCell>
-              <TableCell>{player.team}</TableCell>
+              <TableCell>{player.fantasypoints}</TableCell>
             </TableRow>
           ))}
         </TableBody>

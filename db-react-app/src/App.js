@@ -8,8 +8,10 @@ import {
   Container
 } from '@mui/material';
 import axios from "axios";
-import AllTeams from './components/AllTeams';
+import AllTeams from './components/Allteams';
 import AllPlayers from './components/AllPlayers';
+import PlayersByTeam from './components/PlayersByTeam';
+
 
 const baseURL =  "http://localhost:3001/api"
 
@@ -42,6 +44,19 @@ function App() {
       })
   };
 
+  const getPlayersByTeam = () => {
+    console.log("reached")
+    axios.get(`${baseURL}/fetch_all_teams`)
+      .then(response => {
+        console.log(response.data)
+        setReturnData(response.data)
+        setShowType('players_by_team')
+      })
+      .catch(error => {
+        console.error('There was an error!', error)
+      })
+  }
+
   return (
     <div>
       <AppBar position="static">
@@ -57,6 +72,15 @@ function App() {
           <Button variant="contained" onClick={() => getAllPlayers()}>
             View All Players
           </Button>
+          <Button variant="contained" onClick={() => getPlayersByTeam()}>
+            View Players By Team
+          </Button>
+          <Button variant="contained" onClick={() => getAllPlayers()}>
+            View Players By Position
+          </Button>
+          <Button variant="contained" onClick={() => getAllPlayers()}>
+            Build your own Team
+          </Button>
         </div>
         <div style={{ marginTop: '20px' }}>
           {showType && showType === 'all_teams' && ( 
@@ -64,6 +88,9 @@ function App() {
           )}
           {showType && showType === 'all_players' && ( 
             <AllPlayers data={returnData} />
+          )}
+          {showType && showType === 'players_by_team' && ( 
+            <PlayersByTeam  data={returnData}/>
           )}
         </div>
       </Container>
