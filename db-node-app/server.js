@@ -28,6 +28,17 @@ app.get('/api/greet', async (req, res) => {
     res.json({ message: 'Hello from the server'});
 });
 
+// Get all Teams
+app.get('/api/fetch_all', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM Team'); 
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
 // Example route to get data from PostgreSQL
 app.get('/api/data', async (req, res) => {
   try {
