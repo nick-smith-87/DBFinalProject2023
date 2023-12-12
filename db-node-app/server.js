@@ -37,9 +37,20 @@ app.get('/api/greet', async (req, res) => {
 });
 
 // Get all Teams
-app.get('/api/fetch_all', async (req, res) => {
+app.get('/api/fetch_all_teams', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM Team'); 
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+// Get all Players
+app.get('/api/fetch_all_players', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM Player ORDER BY Position'); 
     res.json(result.rows);
   } catch (err) {
     console.error(err);

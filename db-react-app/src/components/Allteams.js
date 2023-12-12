@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 
 
-function Allteams(props) {
+function AllTeams(props) {
 
   const {data} = props;
 
@@ -52,4 +52,4 @@ function Allteams(props) {
 }
 
 
-export default Allteams;
+export default AllTeams;

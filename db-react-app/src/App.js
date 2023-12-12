@@ -8,21 +8,34 @@ import {
   Container
 } from '@mui/material';
 import axios from "axios";
-import Allteams from './components/Allteams';
+import AllTeams from './components/AllTeams';
+import AllPlayers from './components/AllPlayers';
 
 const baseURL =  "http://localhost:3001/api"
 
 
 function App() {
-  const [loading, setLoading] = useState(false);
+  const [showType, setShowType] = useState('');
   const [returnData, setReturnData] = useState(null);
 
-  const getAll = () => {
-    axios.get(`${baseURL}/fetch_all`)
+  const getAllTeams = () => {
+    axios.get(`${baseURL}/fetch_all_teams`)
       .then(response => {
         console.log(response.data)
         setReturnData(response.data)
-        setLoading(!loading)
+        setShowType('all_teams')
+      })
+      .catch(error => {
+        console.error('There was an error!', error)
+      })
+  };
+
+  const getAllPlayers = () => {
+    axios.get(`${baseURL}/fetch_all_players`)
+      .then(response => {
+        console.log(response.data)
+        setReturnData(response.data)
+        setShowType('all_players')
       })
       .catch(error => {
         console.error('There was an error!', error)
@@ -38,13 +51,19 @@ function App() {
       </AppBar>
       <Container>
         <div style={{ marginTop: '20px' }}>
-          <Button variant="contained" onClick={() => getAll()}>
+          <Button variant="contained" onClick={() => getAllTeams()}>
             View All Teams
+          </Button>
+          <Button variant="contained" onClick={() => getAllPlayers()}>
+            View All Players
           </Button>
         </div>
         <div style={{ marginTop: '20px' }}>
-          {loading && ( 
-            <Allteams data={returnData} />
+          {showType && showType === 'all_teams' && ( 
+            <AllTeams data={returnData} />
+          )}
+          {showType && showType === 'all_players' && ( 
+            <AllPlayers data={returnData} />
           )}
         </div>
       </Container>
