@@ -4,12 +4,20 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const { Pool } = require('pg');
 
-// Configure PostgreSQL connection
-const pool = new Pool({
+// for nick
+/*const pool = new Pool({
   user: 'nicksmith', // replace with your postgres username
   host: 'localhost',
   database: 'nicksmith', // replace with your database name
   port: 5434,
+});*/
+
+//for drew
+const pool = new Pool({
+  user: 'drewamunateguiii', // replace with your postgres username
+  host: 'localhost',
+  database: 'drewamunateguiii', // replace with your database name
+  port: 5433,
 });
 
 const app = express();
