@@ -12,7 +12,7 @@ import AllTeams from './components/Allteams';
 import AllPlayers from './components/AllPlayers';
 import PlayersByTeam from './components/PlayersByTeam';
 import PlayersByPosition from './components/PlayersByPosition';
-
+import BuildYourTeam from './components/BuildYourTeam';
 
 const baseURL =  "http://localhost:3001/api"
 
@@ -62,6 +62,19 @@ function App() {
 
   }
 
+  const buildTeam = () => {
+    axios.get(`${baseURL}/fetch_all_teams`)
+      .then(response => {
+        console.log(response.data)
+        setReturnData(response.data)
+        setShowType('build_your_team')
+      })
+      .catch(error => {
+        console.error('There was an error!', error)
+      })
+    console.log("reached")
+  }
+
   return (
     <div>
       <AppBar position="static">
@@ -83,7 +96,7 @@ function App() {
           <Button variant="contained" onClick={() => getPlayersByPosition()}>
             View Players By Position
           </Button>
-          <Button variant="contained" onClick={() => getAllPlayers()}>
+          <Button variant="contained" onClick={() => buildTeam()}>
             Build your own Team
           </Button>
         </div>
@@ -99,6 +112,9 @@ function App() {
           )}
           {showType && showType === 'players_by_position' && ( 
             <PlayersByPosition />
+          )}
+          {showType && showType === 'build_your_team' && ( 
+            <BuildYourTeam data={returnData}/>
           )}
         </div>
       </Container>
