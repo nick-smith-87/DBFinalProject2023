@@ -11,6 +11,7 @@ import axios from "axios";
 import AllTeams from './components/Allteams';
 import AllPlayers from './components/AllPlayers';
 import PlayersByTeam from './components/PlayersByTeam';
+import PlayersByPosition from './components/PlayersByPosition';
 
 
 const baseURL =  "http://localhost:3001/api"
@@ -45,7 +46,6 @@ function App() {
   };
 
   const getPlayersByTeam = () => {
-    console.log("reached")
     axios.get(`${baseURL}/fetch_all_teams`)
       .then(response => {
         console.log(response.data)
@@ -55,6 +55,11 @@ function App() {
       .catch(error => {
         console.error('There was an error!', error)
       })
+  }
+
+  const getPlayersByPosition = () => {
+    setShowType('players_by_position')
+
   }
 
   return (
@@ -75,7 +80,7 @@ function App() {
           <Button variant="contained" onClick={() => getPlayersByTeam()}>
             View Players By Team
           </Button>
-          <Button variant="contained" onClick={() => getAllPlayers()}>
+          <Button variant="contained" onClick={() => getPlayersByPosition()}>
             View Players By Position
           </Button>
           <Button variant="contained" onClick={() => getAllPlayers()}>
@@ -91,6 +96,9 @@ function App() {
           )}
           {showType && showType === 'players_by_team' && ( 
             <PlayersByTeam  data={returnData}/>
+          )}
+          {showType && showType === 'players_by_position' && ( 
+            <PlayersByPosition />
           )}
         </div>
       </Container>

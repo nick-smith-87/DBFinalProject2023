@@ -87,6 +87,30 @@ app.get('/api/get_players_by_team', async (req, res) => {
   }
 });
 
+app.get('/api/get_players_by_position', async (req, res) => {
+  try {
+    const position = req.query.position; // Corrected from req.query.teamName
+    if (!position) {
+      return res.status(400).json({ error: 'Position is required.' });
+    }
+
+    const result = await pool.query(`
+      SELECT player.playerid, player.name, player.position, player.salary, player.fantasypoints
+      FROM player 
+      WHERE player.position = $1
+      ORDER BY player.playerid
+    `, [position]);
+
+    console.log(result);
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+
 
 
 // Example route to get data from PostgreSQL
