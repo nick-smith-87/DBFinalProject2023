@@ -5,21 +5,22 @@ const cors = require('cors');
 const { Pool } = require('pg');
 
 // for nick
+/*
 const pool = new Pool({
   user: 'nicksmith', // replace with your postgres username
   host: 'localhost',
   database: 'nicksmith', // replace with your database name
   port: 5434,
 });
+*/
 
 //for drew 
-/*
 const pool = new Pool({
   user: 'drewamunateguiii', // replace with your postgres username
   host: 'localhost',
   database: 'drewamunateguiii', // replace with your database name
   port: 5433,
-}); */
+});
 
 const app = express();
 
@@ -110,8 +111,24 @@ app.get('/api/get_players_by_position', async (req, res) => {
   }
 });
 
+app.get('/api/get_players_to_build_your_team', async (req, res) => {
+  const { team, cap } = req.query;
+  try {
+    let query = 'SELECT * FROM Players WHERE team = $1';
+    let params = [team];
 
+    if (cap !== 'Unlimited') {
+      query += ' AND salary <= $2';
+      params.push(cap);
+    }
 
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
 
 // Example route to get data from PostgreSQL
 app.get('/api/data', async (req, res) => {
