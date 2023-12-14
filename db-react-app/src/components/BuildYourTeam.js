@@ -5,31 +5,24 @@ import axios from 'axios';
 const baseURL = "http://localhost:3001/api";
 
 function BuildYourTeam(props) {
-  const { data: teams } = props;
-  const [selectedTeam, setSelectedTeam] = useState('');
   const [playersData, setPlayersData] = useState([]);
   const [selectedPlayers, setSelectedPlayers] = useState({ QB: '', RB: '', WR: '', TE: '' });
   const [salaryCap, setSalaryCap] = useState('Unlimited');
   
   useEffect(() => {
     const fetchPlayers = () => {
-      axios.get(`${baseURL}/get_players_to_build_your_team`, { params: { team: selectedTeam, cap: salaryCap } })
+      axios.get(`${baseURL}/get_players_to_build_your_team`, { params: { cap: salaryCap } })
         .then(response => {
+          console.log("Fetched players:", response.data);
           setPlayersData(response.data);
         })
         .catch(error => {
           console.error('There was an error!', error);
         });
     };
+    fetchPlayers();
 
-    if (selectedTeam) {
-      fetchPlayers();
-    }
-  }, [selectedTeam, salaryCap]);
-
-  const handleTeamChange = (event) => {
-    setSelectedTeam(event.target.value);
-  };
+  }, [salaryCap]);
 
   const handlePlayerChange = (position, event) => {
     setSelectedPlayers(prev => ({ ...prev, [position]: event.target.value }));
@@ -42,12 +35,24 @@ function BuildYourTeam(props) {
   const calculateTotalSalary = () => {
     return Object.values(selectedPlayers).reduce((total, playerId) => {
       const player = playersData.find(p => p.id === playerId);
-      return total - (player ? player.salary : 0);
+      return total + (player ? player.salary : 0);
     }, 0);
   };
 
+  const calculateRemainingCap = () => {
+    if (salaryCap === 'Unlimited') {
+      return 'Unlimited';
+    }
+    const totalSalary = calculateTotalSalary();
+    return salaryCap - totalSalary;
+  };
+
   const renderPositionSelect = (position) => {
-    const filteredPlayers = playersData.filter(p => p.position === position && (salaryCap === 'Unlimited' || p.salary <= salaryCap));
+    const remainingCap = calculateRemainingCap();
+    const filteredPlayers = playersData.filter(p => 
+      p.position === position && 
+      (remainingCap === 'Unlimited' || p.salary <= remainingCap)
+    );
     return (
       <FormControl key={position} style={{ width: '200px', margin: '10px' }}>
         <InputLabel>{position}</InputLabel>
@@ -56,7 +61,9 @@ function BuildYourTeam(props) {
           onChange={(e) => handlePlayerChange(position, e)}
         >
           {filteredPlayers.map(player => (
-            <MenuItem key={player.id} value={player.id}>{player.name} - ${player.salary.toLocaleString()}</MenuItem>
+            <MenuItem key={player.id} value={player.id}>
+              {player.name} - ${player.salary.toLocaleString()}
+            </MenuItem>
           ))}
         </Select>
       </FormControl>
@@ -65,14 +72,6 @@ function BuildYourTeam(props) {
 
   return (
     <div>
-      <FormControl style={{ width: '200px', margin: '10px' }}>
-        <InputLabel>Team</InputLabel>
-        <Select value={selectedTeam} onChange={handleTeamChange}>
-          {teams.map(team => (
-            <MenuItem key={team.id} value={team.name}>{team.name}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
 
       <FormControl style={{ width: '200px', margin: '10px' }}>
         <InputLabel>Salary Cap</InputLabel>
@@ -84,6 +83,7 @@ function BuildYourTeam(props) {
           <MenuItem value={200000000}>$200,000,000</MenuItem>
         </Select>
       </FormControl>
+      <br></br>
 
       {['QB', 'RB', 'WR', 'TE'].map(renderPositionSelect)}
 
