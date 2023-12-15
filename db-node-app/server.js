@@ -114,7 +114,7 @@ app.get('/api/get_players_by_position', async (req, res) => {
 //build a team with Cap limit
 app.get('/api/get_players_to_build_your_team', async (req, res) => {
   try {
-    let query = 'SELECT * FROM Player';
+    let query = 'SELECT * FROM Player ORDER BY fantasypoints DESC';
     const result = await pool.query(query, params);
     res.json(result.rows);
   } catch (err) {

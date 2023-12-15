@@ -63,7 +63,7 @@ function App() {
   }
 
   const buildTeam = () => {
-    axios.get(`${baseURL}/fetch_all_teams`)
+    axios.get(`${baseURL}/fetch_all_players`)
       .then(response => {
         console.log(response.data)
         setReturnData(response.data)
@@ -72,7 +72,6 @@ function App() {
       .catch(error => {
         console.error('There was an error!', error)
       })
-    console.log("reached")
   }
 
   return (
@@ -108,13 +107,13 @@ function App() {
             <AllPlayers data={returnData} />
           )}
           {showType && showType === 'players_by_team' && ( 
-            <PlayersByTeam  data={returnData}/>
+            <PlayersByTeam data={returnData}/>
           )}
           {showType && showType === 'players_by_position' && ( 
             <PlayersByPosition />
           )}
           {showType && showType === 'build_your_team' && ( 
-            <BuildYourTeam data={returnData}/>
+            <BuildYourTeam players={returnData}/>
           )}
         </div>
       </Container>
