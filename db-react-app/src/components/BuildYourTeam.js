@@ -266,7 +266,7 @@ function BuildYourTeam(props) {
           <MenuItem key={7} value={35000000}>
             $35,000,000
           </MenuItem>
-          <MenuItem key={8} value={20000000}>
+          <MenuItem key={8} value={40000000}>
             $40,000,000
           </MenuItem>
         </Select>
