@@ -279,7 +279,7 @@ function BuildYourTeam(props) {
         variant="h6"
         style={{ marginTop: "20px", marginLeft: "20px" }}
       >
-        Total Team Salary: {totalSalary.toLocaleString()}
+        Total Team Salary: ${totalSalary.toLocaleString()}
       </Typography>
       {salaryCap !== "Unlimited" ? (
         <Typography
